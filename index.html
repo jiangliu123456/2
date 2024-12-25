@@ -3,25 +3,34 @@
 
 <head> 
   <meta charset="UTF - 8"> 
-  <title>获取地理位置</title> 
+  <title>经纬度转换为小区信息</title> 
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v  = 3.0&ak = YOUR_API_KEY"></script> 
 </head> 
 
 <body> 
-  <button onclick="getLocation()">获取我的位置</button> 
+  <button onclick="getLocationAndConvert()">获取位置并转换为小区信息</button> 
 
   <script> 
-    function getLocation() { 
+    function getLocationAndConvert() { 
       if (navigator.geolocation)  { 
-        navigator.geolocation.getCurrentPosition(showPosition);  
+        navigator.geolocation.getCurrentPosition(function  (position) { 
+          var latitude = position.coords.latitude;  
+          var longitude = position.coords.longitude;  
+          var url = 'https://api.map.baidu.com/reverse_geocoding/v3/?ak  = YOUR_API_KEY&output = json&coordtype = wgs84ll&location=' + latitude + ',' + longitude; 
+          var xhr = new XMLHttpRequest(); 
+          xhr.open('GET',  url, true); 
+          xhr.onreadystatechange  = function () { 
+            if (xhr.readyState  === 4 && xhr.status  === 200) { 
+              var result = JSON.parse(xhr.responseText);  
+              var address = result.result.formatted_address;  
+              alert('您所在的小区信息（近似）：' + address); 
+            } 
+          }; 
+          xhr.send();  
+        }); 
       } else { 
         alert('您的浏览器不支持地理定位'); 
       } 
-    } 
-
-    function showPosition(position) { 
-      var latitude = position.coords.latitude;  
-      var longitude = position.coords.longitude;  
-      alert('您的位置：纬度为' + latitude + ',经度为' + longitude); 
     } 
   </script> 
 </body> 
