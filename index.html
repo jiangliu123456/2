@@ -1,0 +1,29 @@
+<!DOCTYPE html> 
+<html> 
+
+<head> 
+  <meta charset="UTF - 8"> 
+  <title>获取地理位置</title> 
+</head> 
+
+<body> 
+  <button onclick="getLocation()">获取我的位置</button> 
+
+  <script> 
+    function getLocation() { 
+      if (navigator.geolocation)  { 
+        navigator.geolocation.getCurrentPosition(showPosition);  
+      } else { 
+        alert('您的浏览器不支持地理定位'); 
+      } 
+    } 
+
+    function showPosition(position) { 
+      var latitude = position.coords.latitude;  
+      var longitude = position.coords.longitude;  
+      alert('您的位置：纬度为' + latitude + ',经度为' + longitude); 
+    } 
+  </script> 
+</body> 
+
+</html> 
